@@ -4,14 +4,15 @@ from transformers import (BertForSequenceClassification, DistilBertForSequenceCl
                           MT5ForConditionalGeneration)
 
 from .classification_transformer import ClassificationTransformer
+from .multihead_classification_transformer import MultiheadSequenceClassification
 from .zsc_transformer import ZeroShotClassificationTransformer
 from .translation_transformer import TranslationTransformer
 from .feature_extraction_transformer import FeatureExtractionTransformer
 
 
-__all__ = ['ClassificationTransformer', 'ZeroShotClassificationTransformer',
-           'TranslationTransformer', 'FeatureExtractionTransformer',
-           'BERT', 'DistilBERT', 'RoBERTa', 'T5', 'MT5', 'BART']
+__all__ = ['ClassificationTransformer', 'MultiheadSequenceClassification',
+           'ZeroShotClassificationTransformer', 'TranslationTransformer',
+           'FeatureExtractionTransformer', 'BERT', 'DistilBERT', 'RoBERTa', 'T5', 'MT5', 'BART']
 
 """
 Classification Transformers

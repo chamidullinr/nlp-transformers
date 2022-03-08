@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='nlp-transformers',
-    version='0.2.2',
+    version='0.2.3',
     description='A Python library for applying Transformers on various NLP tasks.',
     long_description=long_description,
     py_module=['nlp_transformers'],

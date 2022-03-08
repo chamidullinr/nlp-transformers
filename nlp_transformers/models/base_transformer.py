@@ -58,7 +58,7 @@ class BaseTransformer:
             raise ValueError(f'Input parameter type "{type(x)}" is not supported.')
 
         # tokenize dataset if needed
-        if 'input_ids' not in dataset.features:  # dataset is tokenized
+        if 'input_ids' not in dataset.features:  # dataset is not tokenized
             params = dict(inp_feature=inp_feature, max_inp_length=max_inp_length, **kwargs)
             tokenized_dataset = self.tokenize_dataset(dataset, *args, **params)
         else:
