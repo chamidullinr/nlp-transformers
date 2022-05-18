@@ -15,13 +15,13 @@ def f1(pred: np.array, targ: np.array, labels=None):
         if labels is None:
             labels = np.arange(pred.shape[1])
         pred = pred.argmax(1)
-    return f1_score(targ, pred, labels=labels, average='macro')
+    return f1_score(targ, pred, labels=labels, average="macro")
 
 
 def text_accuracy(a: [str, Iterable], b: [str, Iterable]):
     def metric(_a, _b):
         return int(_a == _b)
-    
+
     if isinstance(a, str) and isinstance(b, str):
         out = metric(a, b)
     else:
@@ -44,8 +44,8 @@ def levenshtein_score(a: [str, Iterable], b: [str, Iterable]):
 
 def jaccard_index(a: [str, Iterable], b: [str, Iterable]):
     def metric(_a, _b):
-        label_1 = set(_a.split(' ')) if not isinstance(_a, list) else set(_a)
-        label_2 = set(_b.split(' ')) if not isinstance(_b, list) else set(_b)
+        label_1 = set(_a.split(" ")) if not isinstance(_a, list) else set(_a)
+        label_2 = set(_b.split(" ")) if not isinstance(_b, list) else set(_b)
         union_len = len(label_1.union(label_2))
         intersection_len = len(label_1.intersection(label_2))
         return intersection_len / union_len
@@ -66,12 +66,14 @@ class ClassificationMetricsCallback:
 
         # compute metrics
         out = {met.__name__: met(preds, labels) for met in self.metrics}
-        
+
         return out
 
 
 class TranslationMetricsCallback:
-    def __init__(self, tokenizer, metrics=[text_accuracy, levenshtein_score, jaccard_index]):
+    def __init__(
+        self, tokenizer, metrics=[text_accuracy, levenshtein_score, jaccard_index]
+    ):
         self.tokenizer = tokenizer
         self.metrics = metrics
 

@@ -1,11 +1,9 @@
 import numpy as np
 import pandas as pd
-
-from transformers import AutoTokenizer
 from datasets import Dataset
+from transformers import AutoTokenizer
 
-
-__all__ = ['BaseTransformer']
+__all__ = ["BaseTransformer"]
 
 
 class BaseTransformer:
@@ -15,7 +13,7 @@ class BaseTransformer:
         self.model = None
 
     def __str__(self):
-        return f'{self.__class__.__name__}({self.pretrained_checkpoint})'
+        return f"{self.__class__.__name__}({self.pretrained_checkpoint})"
 
     def __repr__(self):
         return str(self)
@@ -38,10 +36,14 @@ class BaseTransformer:
         return self.model.config if self.model is not None else None
 
     def get_token_length(self, x):
-        model_input = self.tokenizer(x, max_length=None, truncation=False, padding=False)
+        model_input = self.tokenizer(
+            x, max_length=None, truncation=False, padding=False
+        )
         return np.array([len(x) for x in model_input.input_ids])
 
-    def create_dataset(self, x, *args, inp_feature='inp', max_inp_length=None, **kwargs):
+    def create_dataset(
+        self, x, *args, inp_feature="inp", max_inp_length=None, **kwargs
+    ):
         # create dataset
         if isinstance(x, Dataset):
             dataset = x
@@ -58,8 +60,10 @@ class BaseTransformer:
             raise ValueError(f'Input parameter type "{type(x)}" is not supported.')
 
         # tokenize dataset if needed
-        if 'input_ids' not in dataset.features:  # dataset is tokenized
-            params = dict(inp_feature=inp_feature, max_inp_length=max_inp_length, **kwargs)
+        if "input_ids" not in dataset.features:  # dataset is tokenized
+            params = dict(
+                inp_feature=inp_feature, max_inp_length=max_inp_length, **kwargs
+            )
             tokenized_dataset = self.tokenize_dataset(dataset, *args, **params)
         else:
             tokenized_dataset = dataset
