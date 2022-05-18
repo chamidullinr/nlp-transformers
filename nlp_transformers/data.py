@@ -1,10 +1,9 @@
 import numpy as np
 from datasets import Dataset, DatasetDict, concatenate_datasets
-
 from sklearn.preprocessing import LabelEncoder
 
-from .metrics import text_accuracy, levenshtein_score, jaccard_index
 from . import translation_utils
+from .metrics import jaccard_index, levenshtein_score, text_accuracy
 
 
 def concat_datasets(datasets1, datasets2):
@@ -45,26 +44,39 @@ def encode_column(datasets: [Dataset, DatasetDict], name):
     elif isinstance(datasets, DatasetDict):
         encoder.fit(list(datasets.values())[0][name])
 
-    encoded_datasets = datasets.map(encode_records, batched=True, fn_kwargs=dict(encoder=encoder))
+    encoded_datasets = datasets.map(
+        encode_records, batched=True, fn_kwargs=dict(encoder=encoder)
+    )
 
     return encoded_datasets, encoder
 
 
-def create_predictions_df(tokenizer, dataset: Dataset, prediction_out, *, trg_feature='trg',
-                          metrics=[text_accuracy, levenshtein_score, jaccard_index]):
+def create_predictions_df(
+    tokenizer,
+    dataset: Dataset,
+    prediction_out,
+    *,
+    trg_feature="trg",
+    metrics=[text_accuracy, levenshtein_score, jaccard_index]
+):
     """Create DataFrame with predictions and targets. And evaluate metrics."""
-    assert hasattr(prediction_out, 'predictions')
+    assert hasattr(prediction_out, "predictions")
 
     # create test dataframe with preds
     df = dataset.to_pandas()
-    df['pred'] = tokenizer.batch_decode(prediction_out.predictions, skip_special_tokens=True)
-    if hasattr(prediction_out, 'probs'):
-        df['prob'] = translation_utils.get_combined_probs(prediction_out, skip_prob_tok=-1)
-        df['prob_ext'] = translation_utils.get_combined_probs_between_separators(
-            prediction_out, tokenizer)
+    df["pred"] = tokenizer.batch_decode(
+        prediction_out.predictions, skip_special_tokens=True
+    )
+    if hasattr(prediction_out, "probs"):
+        df["prob"] = translation_utils.get_combined_probs(
+            prediction_out, skip_prob_tok=-1
+        )
+        df["prob_ext"] = translation_utils.get_combined_probs_between_separators(
+            prediction_out, tokenizer
+        )
 
     # compute metrics
     for met in metrics:
-        df[met.__name__] = df.apply(lambda r: met(r['pred'], r[trg_feature]), axis=1)
+        df[met.__name__] = df.apply(lambda r: met(r["pred"], r[trg_feature]), axis=1)
 
     return df

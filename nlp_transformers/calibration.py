@@ -6,7 +6,8 @@ def tune_temperature(logits, targs, *, verbose=True):
     """
     Tune the temperature of the model using the validation set.
 
-    Thanks to: https://github.com/gpleiss/temperature_scaling/blob/master/temperature_scaling.py
+    Thanks to:
+    https://github.com/gpleiss/temperature_scaling/blob/master/temperature_scaling.py
     """
     criterion = nn.CrossEntropyLoss()
 
@@ -17,7 +18,7 @@ def tune_temperature(logits, targs, *, verbose=True):
     # calculate loss before temperature scaling
     loss_before = criterion(logits, targs).item()
     if verbose:
-        print(f'Cross Entropy before temperature: {loss_before:.3f}')
+        print(f"Cross Entropy before temperature: {loss_before:.3f}")
 
     # optimize the temperature w.r.t. NLL
     temperature = nn.Parameter(torch.ones(1) * 1.5)
@@ -30,6 +31,7 @@ def tune_temperature(logits, targs, *, verbose=True):
         loss = criterion(logits_, targs)
         loss.backward()
         return loss
+
     optimizer.step(_eval)
 
     # calculate loss after temperature scaling
@@ -37,7 +39,7 @@ def tune_temperature(logits, targs, *, verbose=True):
     loss_after = criterion(logits_, targs).item()
     temperature = temperature.item()
     if verbose:
-        print(f'Optimal temperature: {temperature:.3f}')
-        print(f'Cross Entropy after temperature: {loss_after:.3f}')
+        print(f"Optimal temperature: {temperature:.3f}")
+        print(f"Cross Entropy after temperature: {loss_after:.3f}")
 
     return temperature

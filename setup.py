@@ -1,23 +1,23 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
-with open('README.md', 'r', encoding='utf-8') as f:
-    long_description = ''.join(f.readlines())
+with open("README.md", "r", encoding="utf-8") as f:
+    long_description = "".join(f.readlines())
 
 setup(
-    name='nlp-transformers',
-    version='0.2.2',
-    description='A Python library for applying Transformers on various NLP tasks.',
+    name="nlp-transformers",
+    version="0.2.2",
+    description="A Python library for applying Transformers on various NLP tasks.",
     long_description=long_description,
-    py_module=['nlp_transformers'],
+    py_module=["nlp_transformers"],
     packages=find_packages(),
-    python_requires='>=3.6',
+    python_requires=">=3.6",
     install_requires=[
-        'numpy >= 1.19',
-        'pandas >= 1.1',
-        'scikit-learn >= 0.24',
+        "numpy >= 1.19",
+        "pandas >= 1.1",
+        "scikit-learn >= 0.24",
         # 'torch >= 1.9',
-        'transformers >= 4.10',
-        'datasets >= 1.12'
+        "transformers >= 4.10",
+        "datasets >= 1.12",
     ],
-    zip_safe=False
+    zip_safe=False,
 )

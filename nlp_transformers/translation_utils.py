@@ -19,7 +19,7 @@ def get_combined_probs_between_separators(prediction_out: TranslationOutput, tok
     assert prediction_out.probs is not None
 
     # get pipe ("|") token ids (pipe character can be in multiple tokens)
-    pipe_token_ids = [v for k, v in tokenizer.vocab.items() if '|' in k]
+    pipe_token_ids = [v for k, v in tokenizer.vocab.items() if "|" in k]
 
     # apply loop for each record
     combined_probs_all = []
@@ -36,8 +36,12 @@ def get_combined_probs_between_separators(prediction_out: TranslationOutput, tok
         pipe_idxs = [0] + pipe_idxs + [len(pred)]
 
         # get combined probs separated by pipe ("|")
-        combined_probs = [np.nanmean(prob[(prev_idx+1 if prev_idx != 0 else prev_idx):idx])  # nanprod
-                          for prev_idx, idx in zip(pipe_idxs[:-1], pipe_idxs[1:])]
+        combined_probs = [
+            np.nanmean(
+                prob[(prev_idx + 1 if prev_idx != 0 else prev_idx) : idx]
+            )  # nanprod
+            for prev_idx, idx in zip(pipe_idxs[:-1], pipe_idxs[1:])
+        ]
         combined_probs_all.append(combined_probs)
 
     return combined_probs_all

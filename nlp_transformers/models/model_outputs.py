@@ -2,13 +2,17 @@ from typing import NamedTuple, Optional
 
 import numpy as np
 
-
-__all__ = ['ClassificationOutput', 'ZeroShotClassificationOutput', 'TranslationOutput',
-           'FeatureExtractionOutput']
+__all__ = [
+    "ClassificationOutput",
+    "ZeroShotClassificationOutput",
+    "TranslationOutput",
+    "FeatureExtractionOutput",
+]
 
 
 class ClassificationOutput(NamedTuple):
     """Output object returned by `transformer.predict` method."""
+
     predictions: np.ndarray
     label_ids: Optional[np.ndarray]
     probs: Optional[np.ndarray]
@@ -18,12 +22,14 @@ class ClassificationOutput(NamedTuple):
 
 class ZeroShotClassificationOutput(NamedTuple):
     """Output object returned by `transformer.predict` method."""
+
     probs: np.ndarray
     metrics: Optional[dict]
 
 
 class TranslationOutput(NamedTuple):
     """Output object returned by `transformer.predict` method."""
+
     predictions: np.ndarray
     label_ids: Optional[np.ndarray]
     probs: Optional[np.ndarray]
@@ -33,5 +39,6 @@ class TranslationOutput(NamedTuple):
 
 class FeatureExtractionOutput(NamedTuple):
     """Output object returned by `transformer.predict` method."""
+
     embeddings: np.ndarray
     metrics: Optional[dict]
